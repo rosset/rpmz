@@ -14,6 +14,9 @@ BuildRequires:  gcc
 BuildRequires:  pkgconfig(gtk+-2.0) >= 2.20.0
 BuildRequires:  pkgconfig(gtk+-3.0) >= 3.2.0
 BuildRequires: make
+BuildRequires: libtool
+BuildRequires: autoconf
+BuildRequires: automake
 
 %description
 This package includes the Xfce GTK theme engine with various different themes.
@@ -22,6 +25,7 @@ This package includes the Xfce GTK theme engine with various different themes.
 %setup -q
 
 %build
+autoreconf -vfi
 %configure --disable-static --enable-gtk3
 
 make %{?_smp_mflags}
