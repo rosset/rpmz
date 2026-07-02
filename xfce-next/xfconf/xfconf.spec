@@ -24,6 +24,7 @@ BuildRequires:  gcc-c++
 BuildRequires:  gobject-introspection-devel
 BuildRequires:  vala
 BuildRequires:  systemd-rpm-macros
+BuildRequires:  gtk-doc
 
 Requires:       dbus
 
@@ -55,8 +56,7 @@ shopt -s dotglob
 mv */* . 2>/dev/null || :
 
 %build
-  %meson
-
+  %meson -Dgtk-doc=true
   %meson_build
 
 %install
