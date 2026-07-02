@@ -43,6 +43,7 @@ libxfce4util library.
 %setup -q -c
 shopt -s dotglob
 mv */* . 2>/dev/null || :
+touch ChangeLog
 
 %build
   %meson
