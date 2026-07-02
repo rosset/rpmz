@@ -29,6 +29,7 @@ BuildRequires:  pkgconfig(libxfconf-0) >= %{xfceversion}
 BuildRequires:  pkgconfig(libstartup-notification-1.0) >= 0.4
 BuildRequires:  gtk-doc
 BuildRequires:  desktop-file-utils
+BuildRequires:  glade-devel
 BuildRequires:  gtk3-devel
 BuildRequires:  glade-devel
 BuildRequires:  gettext
@@ -76,7 +77,7 @@ shopt -s dotglob
 mv */* . 2>/dev/null || :
 
 %build
-  %meson -Dgtk-doc=true
+  %meson -Dgtk-doc=true -Dglade=true
 
 # Remove rpaths
 
