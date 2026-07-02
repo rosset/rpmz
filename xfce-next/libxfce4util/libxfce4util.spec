@@ -70,7 +70,7 @@ rm -f %{buildroot}%{_libdir}/*.la
 %{_sbindir}/xfce4-kiosk-query
 %{_libdir}/girepository-1.0/%{namespc}-1.0.typelib
 %{_datadir}/gir-1.0/%{namespc}-1.0.gir
-%{_datadir}/vala/vapi/%{name}-1.0.vapi
+%{_datadir}/vala/vapi/%{name}-1.0.*
 
 %files devel
 %{_libdir}/lib*.so
