@@ -78,7 +78,7 @@ install -pm 644 %{SOURCE1} %{buildroot}%{_datadir}/desktop-directories
 
 %files -f %{name}.lang
 %license COPYING
-%doc AUTHORS ChangeLog NEWS
+%doc AUTHORS NEWS
 %config(noreplace) %{_sysconfdir}/xdg/menus/xfce-applications.menu
 %{_libdir}/*.so.*
 %{_libdir}/girepository-1.0/%{namespc}*
