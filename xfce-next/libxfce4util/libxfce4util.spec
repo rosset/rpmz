@@ -3,14 +3,14 @@
 %global namespc Libxfce4util
 
 Name:           libxfce4util
-Version:        libxfce4util.4.20.1
-Release:        1.20260702030150574701.master.30.g4475593%{?dist}
+Version:        4.20.1
+Release:        %autorelease
 Summary:        Utility library for the Xfce4 desktop environment
 
 # Automatically converted from old format: LGPLv2+ - review is highly recommended.
 License:        LicenseRef-Callaway-LGPLv2+
 URL:            http://www.xfce.org/
-Source0:        libxfce4util-libxfce4util.4.20.1.tar.gz
+Source0:        http://archive.xfce.org/src/xfce/%{name}/%{xfceversion}/%{name}-%{version}.tar.bz2
 #VCS: git:git://git.xfce.org/xfce/libxfce4util
 
 BuildRequires:  gcc-c++
@@ -37,7 +37,7 @@ This package includes static libraries and header files for the
 libxfce4util library.
 
 %prep
-%setup -q -n libxfce4util-libxfce4util.4.20.1
+%setup -q
 
 %build
 %configure --disable-static
