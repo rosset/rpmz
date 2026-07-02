@@ -17,6 +17,7 @@ BuildRequires: make
 BuildRequires: libtool
 BuildRequires: autoconf
 BuildRequires: automake
+BuildRequires: xfce4-dev-tools
 
 %description
 This package includes the Xfce GTK theme engine with various different themes.
