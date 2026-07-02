@@ -61,7 +61,7 @@ shopt -s dotglob
 mv */* . 2>/dev/null || :
 
 %build
-  %meson
+  %meson -Dgtk-doc=true
   %meson_build
 
 %install

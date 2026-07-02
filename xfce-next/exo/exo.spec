@@ -12,9 +12,10 @@ License:        LicenseRef-Callaway-LGPLv2+ AND GPL-2.0-or-later
 URL:            http://xfce.org/
 Source0:        https://gitlab.xfce.org/xfce/exo/-/archive/master/exo-master.tar.gz
 
-BuildRequires:  gcc-c++
-BuildRequires:  meson
-BuildRequires:  ninja-build
+BuildRequires:  libtool
+BuildRequires:  autoconf
+BuildRequires:  automake
+BuildRequires:  xfce4-dev-tools >= 4.20.0
 BuildRequires:  gtk-doc
 BuildRequires:  gettext
 BuildRequires:  perl-URI
@@ -46,11 +47,12 @@ shopt -s dotglob
 mv */* . 2>/dev/null || :
 
 %build
-  %meson
-  %meson_build
+  autoreconf -vfi
+  %configure --disable-static --enable-gtk-doc
+  %make_build
 
 %install
-  %meson_install
+  %make_install
 
 find %{buildroot} -type f -name "*.la" -exec rm -f {} ';'
 
