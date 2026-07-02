@@ -25,6 +25,7 @@ BuildRequires:  gobject-introspection-devel
 BuildRequires:  vala
 BuildRequires:  systemd-rpm-macros
 BuildRequires:  gtk-doc
+BuildRequires:  xfce4-dev-tools >= 4.20.0
 
 Requires:       dbus
 
