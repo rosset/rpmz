@@ -12,13 +12,13 @@ URL:            https://docs.xfce.org/xfce/xfce4-dev-tools/start
 Source0:        https://gitlab.xfce.org/xfce/xfce4-dev-tools/-/archive/master/xfce4-dev-tools-master.tar.gz
 
 BuildRequires:  gettext-devel
-BuildRequires:  xfce4-dev-tools
-BuildRequires:  libtool
 BuildRequires:  libtool
 BuildRequires:  intltool
 BuildRequires:  make
 BuildRequires:  glib2-devel
 BuildRequires:  libxslt-devel
+BuildRequires:  xsltproc
+BuildRequires:  docbook-style-xsl
 BuildRequires:  meson
 Requires:       autoconf
 Requires:       automake
@@ -36,10 +36,11 @@ that want to build Xfce from Git.
 %setup -q -c
 shopt -s dotglob
 mv */* . 2>/dev/null || :
+touch ChangeLog
 NOCONFIGURE=1 ./autogen.sh
 
 %build
-%configure
+%configure --enable-maintainer-mode
 %make_build
 
 %install
@@ -60,6 +61,8 @@ NOCONFIGURE=1 ./autogen.sh
 %{_bindir}/xdt-gen-visibility
 %{_datadir}/aclocal/*
 %{_mandir}/man1/xdt-csource.1.gz
+%{_libdir}/cppcheck/
 
 %changelog
 %autochangelog
+

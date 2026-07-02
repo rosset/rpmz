@@ -14,6 +14,7 @@ Source0:        https://gitlab.xfce.org/xfce/libxfce4util/-/archive/master/libxf
 #VCS: git:git://git.xfce.org/xfce/libxfce4util
 
 BuildRequires:  gcc-c++
+BuildRequires:  xfce4-dev-tools
 BuildRequires:  meson
 BuildRequires:  ninja-build
 BuildRequires:  pkgconfig(glib-2.0) >= 2.24.0
