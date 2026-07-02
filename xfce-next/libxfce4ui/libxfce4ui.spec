@@ -38,6 +38,7 @@ BuildRequires:  vala
 BuildRequires:  make
 BuildRequires:  libgtop2-devel
 BuildRequires:  libgudev-devel
+BuildRequires:  xfce4-dev-tools >= 4.20.0
 
 #
 # libxfcegui4 was depreciated in the Xfce 4.8 days.
