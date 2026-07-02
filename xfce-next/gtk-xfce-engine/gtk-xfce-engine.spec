@@ -9,10 +9,8 @@ Summary:        Xfce GTK theme engine
 License:        GPL-2.0-or-later
 URL:            http://www.xfce.org/
 #VCS: git:git://git.xfce.org/xfce/gtk-xfce-engine
-Source0:        http://archive.xfce.org/src/xfce/%{name}/%{minorversion}/%{name}-%{version}.tar.bz2
+Source0:        https://archive.xfce.org/src/archive/%{name}/%{minorversion}/%{name}-%{version}.tar.bz2
 BuildRequires:  gcc
-BuildRequires:  meson
-BuildRequires:  ninja-build
 BuildRequires:  pkgconfig(gtk+-2.0) >= 2.20.0
 BuildRequires:  pkgconfig(gtk+-3.0) >= 3.2.0
 BuildRequires: make
@@ -21,18 +19,16 @@ BuildRequires: make
 This package includes the Xfce GTK theme engine with various different themes.
 
 %prep
-%setup -q -c
-shopt -s dotglob
-mv */* . 2>/dev/null || :
+%setup -q
 
 %build
-  %meson
+%configure --disable-static --enable-gtk3
 
 make %{?_smp_mflags}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-  %meson_install
+make install DESTDIR=$RPM_BUILD_ROOT INSTALL='install -p'
 find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 
 %files
