@@ -9,7 +9,7 @@ Summary:        CPU frequency scaling plugin for the Xfce4 panel
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
 URL:            http://goodies.xfce.org/projects/panel-plugins/xfce4-cpufreq-plugin
-Source0:        http://archive.xfce.org/src/panel-plugins/%{name}/%{minorversion}/%{name}-%{version}.tar.xz
+Source0:        https://gitlab.xfce.org/panel-plugins/xfce4-cpufreq-plugin/-/archive/master/xfce4-cpufreq-plugin-master.tar.gz
 
 BuildRequires:  make
 BuildRequires:  gcc-c++
@@ -30,7 +30,9 @@ In a separate dialog it provides you following information:
     used driver for the CPU
 
 %prep
-%autosetup -p1
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
 %meson
@@ -42,7 +44,6 @@ In a separate dialog it provides you following information:
 %find_lang %{name}
 
 find %{buildroot} -name \*.la -exec rm {} \;
-
 
 %files -f %{name}.lang
 %doc AUTHORS NEWS

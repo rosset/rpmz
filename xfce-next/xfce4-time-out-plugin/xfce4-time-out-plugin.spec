@@ -12,9 +12,11 @@ Summary:        Xfce panel plugin for taking breaks from the computer
 License:        GPL-2.0-or-later
 URL:            http://goodies.xfce.org/projects/panel-plugins/%{name}
 #VSC: git: git://git.xfce.org/panel-plugins/xfce4-time-out-plugin
-Source0:        http://archive.xfce.org/src/panel-plugins/%{name}/%{minor_version}/%{name}-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/panel-plugins/xfce4-time-out-plugin/-/archive/master/xfce4-time-out-plugin-master.tar.gz
 
 BuildRequires: make
+BuildRequires:  meson
+BuildRequires:  ninja-build
 BuildRequires:  gcc-c++
 BuildRequires:  libxfce4ui-devel >= %{xfceversion}
 BuildRequires:  xfce4-panel-devel >= %{xfceversion}
@@ -28,18 +30,17 @@ This plugin makes it possible to take periodical breaks from the computer every
 X minutes. During breaks it locks your screen. It optionally allows you to 
 postpone breaks for a certain time.
 
-
 %prep
-%setup -q
-
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
-%configure 
-%make_build
-
+  %meson
+  %meson_build
 
 %install
-%make_install
+  %meson_install
 
 chmod -c +x %{buildroot}%{_libdir}/xfce4/panel/plugins/libtime-out.so
 
@@ -53,7 +54,6 @@ find %{buildroot} -name '*.la' -exec rm -f {} ';'
 %{_libdir}/xfce4/panel/plugins/
 %{_datadir}/xfce4/panel/plugins/*.desktop
 %{_datadir}/icons/hicolor/*/*/*
-
 
 %changelog
 %autochangelog

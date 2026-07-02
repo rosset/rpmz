@@ -13,7 +13,7 @@ Summary:        Screenshot utility for the Xfce desktop
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
 URL:            http://goodies.xfce.org/projects/applications/%{name}
-Source0:        http://archive.xfce.org/src/apps/%{name}/%{minorversion}/%{name}-%{version}.tar.xz
+Source0:        https://gitlab.xfce.org/apps/xfce4-screenshooter/-/archive/master/xfce4-screenshooter-master.tar.gz
 
 BuildRequires:  make
 BuildRequires:  gcc-c++
@@ -44,17 +44,14 @@ Requires:       xfce4-panel >= %{xfceversion}
 The Xfce Screenshooter plugin allows you to take screenshots from the Xfce 
 panel.
 
-
 %prep
-%autosetup
-
-# KDE and GNOME have their own screenshot utils
-echo "NotShowIn=KDE;GNOME;" >> src/xfce4-screenshooter.desktop.in.in
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
 %meson
 %meson_build
-
 
 %install
 %meson_install
@@ -79,11 +76,9 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/*.appdat
 %{_datadir}/icons/hicolor/*/apps/org.xfce*screenshooter*
 %{_datadir}/metainfo/xfce4-screenshooter.appdata.xml
 
-
 %files plugin
 %{_libdir}/xfce4/panel/plugins/*.so
 %{_datadir}/xfce4/panel/plugins/*.desktop
-
 
 %changelog
 %autochangelog

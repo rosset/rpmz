@@ -13,7 +13,7 @@ Summary:        Generic monitor plugin for the Xfce panel
 License:        LicenseRef-Callaway-LGPLv2+
 URL:            http://goodies.xfce.org/projects/panel-plugins/%{name}
 #VCS: git:git://git.xfce.org/panel-plugins/xfce4-genmon-plugin
-Source0:        http://archive.xfce.org/src/panel-plugins/%{name}/%{minor_version}/%{name}-%{version}.tar.xz
+Source0:        https://gitlab.xfce.org/panel-plugins/xfce4-genmon-plugin/-/archive/master/xfce4-genmon-plugin-master.tar.gz
 
 BuildRequires:  make
 BuildRequires:  gcc-c++
@@ -26,25 +26,22 @@ Requires:       xfce4-panel >= %{xfceversion}
 The GenMon plugin cyclically spawns the indicated script/program,
 captures its output and displays it as a string into the panel.
 
-
 %prep
-%autosetup
-
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
 %meson
 %meson_build
 
-
 %install
 %meson_install
-
 
 # make sure debuginfo is generated properly
 chmod -c +x %{buildroot}%{_libdir}/xfce4/panel/plugins/*.so
 
 %find_lang %{name}
-
 
 %files -f %{name}.lang
 %license COPYING

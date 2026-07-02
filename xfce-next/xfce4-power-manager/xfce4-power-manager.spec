@@ -9,10 +9,12 @@ Summary:	Power management for the Xfce desktop environment
 License:	GPL-2.0-or-later
 URL:		http://goodies.xfce.org/projects/applications/%{name}
 #VCS: git:git://git.xfce.org/xfce/xfce4-power-manager
-Source0:	http://archive.xfce.org/src/xfce/%{name}/%{xfceversion}/%{name}-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/xfce/xfce4-power-manager/-/archive/master/xfce4-power-manager-master.tar.gz
 Source1:	%{name}.xml
 
 BuildRequires:  make
+BuildRequires:  meson
+BuildRequires:  ninja-build
 BuildRequires:  gcc-c++
 BuildRequires:  pkgconfig(libxfconf-0) >= %{xfceversion}
 BuildRequires:  pkgconfig(libxfce4ui-2) >= %{xfceversion}
@@ -38,16 +40,17 @@ display icons and handle user callbacks in an interactive Xfce session.
 Xfce Power Preferences allows authorised users to set policy and change 
 preferences.
 
-
 %prep
-%autosetup -p1
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
-%configure
-%make_build
+  %meson
+  %meson_build
 
 %install
-%make_install
+  %meson_install
 
 # install xfpm default config
 mkdir -p %{buildroot}%{_sysconfdir}/xdg/xfce4/xfconf/xfce-perchannel-xml

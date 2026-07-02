@@ -12,11 +12,13 @@ Summary:        Smart bookmarks for the Xfce panel
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
 URL:            http://goodies.xfce.org/projects/panel-plugins/%{name}
-Source0:        http://archive.xfce.org/src/panel-plugins/%{name}/%{minor_version}/%{name}-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/panel-plugins/xfce4-smartbookmark-plugin/-/archive/master/xfce4-smartbookmark-plugin-master.tar.gz
 # vendor specific patches
 Patch10:        %{name}-%{version}-redhat.patch
 
 BuildRequires: make
+BuildRequires:  meson
+BuildRequires:  ninja-build
 BuildRequires:  gcc-c++
 BuildRequires:  xfce4-panel-devel >= %{xfceversion}
 BuildRequires:  libxfce4ui-devel >= %{xfceversion}
@@ -31,27 +33,25 @@ Google or Red Hat Bugzilla. It allows you to send requests directly to your
 browser and perform custom searches.
 
 %prep
-%autosetup -p1
-
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
-%configure --disable-static
-%make_build
-
+  %meson
+  %meson_build
 
 %install
-%make_install
+  %meson_install
 find %{buildroot} -type f -name "*.la" -exec rm -f {} ';'
 chmod 755 %{buildroot}/%{_libdir}/xfce4/panel/plugins/*.so
 %find_lang %{name}
-
 
 %files -f %{name}.lang
 %doc AUTHORS ChangeLog
 %license COPYING
 %{_libdir}/xfce4/panel/plugins/*.so
 %{_datadir}/xfce4/panel/plugins/*.desktop
-
 
 %changelog
 %autochangelog

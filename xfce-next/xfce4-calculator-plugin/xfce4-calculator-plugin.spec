@@ -10,7 +10,7 @@ Summary:	A calculator plugin for the Xfce4 panel
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:	GPL-2.0-or-later
 URL:		http://goodies.xfce.org/projects/panel-plugins/%{name}
-Source0:	http://archive.xfce.org/src/panel-plugins/%{name}/%{majorver}/%{name}-%{version}.tar.xz
+Source0:        https://gitlab.xfce.org/panel-plugins/xfce4-calculator-plugin/-/archive/master/xfce4-calculator-plugin-master.tar.gz
 
 BuildRequires:	make
 BuildRequires:	gcc-c++
@@ -30,11 +30,10 @@ The plugin supports common mathematical operators (+, -, *, /, ^) with usual
 precedence rules and some basic functions (e.g., trigonometric functions) 
 and constants.
 
-
 %prep
-%autosetup
-# remove empty file
-rm -f NEWS
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
 %meson

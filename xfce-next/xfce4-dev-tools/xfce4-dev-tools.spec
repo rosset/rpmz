@@ -9,9 +9,11 @@ Summary:        Xfce developer tools
 License:        GPL-2.0-or-later
 URL:            https://docs.xfce.org/xfce/xfce4-dev-tools/start
 #VCS git:https://gitlab.xfce.org/xfce/xfce4-dev-tools.git
-Source0:        http://archive.xfce.org/xfce/%{xfceversion}/src/%{name}-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/xfce/xfce4-dev-tools/-/archive/master/xfce4-dev-tools-master.tar.gz
 
 BuildRequires:  gettext-devel
+BuildRequires:  xfce4-dev-tools
+BuildRequires:  libtool
 BuildRequires:  libtool
 BuildRequires:  intltool
 BuildRequires:  make
@@ -31,7 +33,10 @@ This package contains common tools required by Xfce developers and people
 that want to build Xfce from Git.
 
 %prep
-%autosetup
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
+NOCONFIGURE=1 ./autogen.sh
 
 %build
 %configure

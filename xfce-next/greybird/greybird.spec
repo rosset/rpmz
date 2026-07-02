@@ -8,8 +8,7 @@ Summary:        A clean minimalistic theme for Xfce, GTK+ 2 and 3
 # Automatically converted from old format: GPLv2+ or CC-BY-SA - review is highly recommended.
 License:        GPL-2.0-or-later OR LicenseRef-Callaway-CC-BY-SA
 URL:            http://shimmerproject.org/project/%{name}/ 
-Source0:        https://github.com/shimmerproject/%{theme_name}/archive/v%{version}.tar.gz
-
+Source0:        https://github.com/shimmerproject/Greybird/archive/master/Greybird-master.tar.gz
 
 BuildRequires:  gdk-pixbuf2-devel
 BuildRequires:  librsvg2-devel
@@ -45,7 +44,6 @@ Obsoletes:      greybird-xfce4-notifyd-theme < 3.22.11
 Obsoletes:      greybird-xfwm4-themes < 3.22.11
 Provides:       greybird-light-theme = %{name}-%{release}
 
-
 %description light-theme
 Light Themes as part of the Greybird theme.
 
@@ -61,10 +59,8 @@ Obsoletes:      greybird-xfce4-notifyd-theme < 3.22.11
 Obsoletes:      greybird-xfwm4-themes < 3.22.11
 Provides:       greybird-dark-theme = %{name}-%{release}
 
-
 %description dark-theme
 Dark Themes as part of the Greybird theme.
-
 
 %package metacity-theme
 Summary:        Greybird Metacity themes
@@ -74,7 +70,6 @@ Requires:       greybird-dark-theme
 
 %description metacity-theme
 Themes for Metacity as part of the Greybird theme.
-
 
 %package xfwm4-theme
 Summary:        Greybird Xfwm4 themes
@@ -103,16 +98,9 @@ Requires:       greybird-dark-theme
 Themes for plank as part of the Greybird theme.
 
 %prep
-
-%setup -q -n %{theme_name}-%{version}
-
-# Cleanup
-# Remove Unity theme
-sed -i '/unity/d' light/meson.build
-sed -i '/unity/d' dark/meson.build
-rm -fr light/unity
-rm -fr dark/unity
-
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
 %meson
@@ -121,7 +109,6 @@ rm -fr dark/unity
 
 %install
 %meson_install
-
 
 %files light-theme
 %doc LICENSE.GPL LICENSE.CC
@@ -133,7 +120,6 @@ rm -fr dark/unity
 %{_datadir}/themes/%{theme_name}/gtk-4.0/
 %{_datadir}/themes/%{theme_name}/openbox-3/
 
-
 %files dark-theme
 %doc LICENSE.GPL LICENSE.CC
 %{_datadir}/themes/%{theme_name}-dark/index.theme
@@ -143,13 +129,11 @@ rm -fr dark/unity
 %{_datadir}/themes/%{theme_name}-dark/gtk-3.0/
 %{_datadir}/themes/%{theme_name}-dark/openbox-3/
 
-
 %files metacity-theme
 %doc LICENSE.GPL LICENSE.CC
 %dir %{_datadir}/themes/Greybird/
 %{_datadir}/themes/%{theme_name}/metacity-1/
 %{_datadir}/themes/%{theme_name}-dark/metacity-1/
-
 
 %files xfwm4-theme
 %doc LICENSE.GPL LICENSE.CC

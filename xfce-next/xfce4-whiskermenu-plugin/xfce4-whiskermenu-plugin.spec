@@ -8,9 +8,11 @@ Summary:	An alternate application launcher for Xfce
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:	GPL-2.0-or-later
 URL:		https://gottcode.org/xfce4-whiskermenu-plugin/
-Source0:	https://archive.xfce.org/src/panel-plugins/%{name}/%{minorversion}/%{name}-%{version}.tar.xz
+Source0:        https://gitlab.xfce.org/panel-plugins/xfce4-whiskermenu-plugin/-/archive/main/xfce4-whiskermenu-plugin-main.tar.gz
 
 BuildRequires:	gcc-c++
+BuildRequires:  meson
+BuildRequires:  ninja-build
 BuildRequires:	cmake
 BuildRequires:	exo-devel
 BuildRequires:	garcon-devel
@@ -24,7 +26,6 @@ BuildRequires:	gettext
 Requires:	xfce4-panel
 Requires:	hicolor-icon-theme
 
-
 %description
 Alternate application launcher for Xfce. When you open it you are shown 
 a list of applications you have marked as favorites. You can browse through
@@ -34,7 +35,9 @@ Additionally, Whisker Menu keeps a list of the last ten applications
 that you have launched from it.
 
 %prep
-%autosetup
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
 %cmake

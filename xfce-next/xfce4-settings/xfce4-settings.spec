@@ -9,11 +9,13 @@ Summary:        Settings Manager for Xfce
 License:        GPL-2.0-or-later
 URL:            http://www.xfce.org/
 #VCS git:git://git.xfce.org/xfce/xfce4-settings
-Source0:        http://archive.xfce.org/src/xfce/%{name}/%{xfceversion}/%{name}-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/xfce/xfce4-settings/-/archive/master/xfce4-settings-master.tar.gz
 # Use Fedora theme and font settings
 Patch10:        xfce4-settings-%{xfceversion}-fedora.patch
 
 BuildRequires:  make
+BuildRequires:  meson
+BuildRequires:  ninja-build
 BuildRequires:  gcc-c++
 BuildRequires:  gettext
 BuildRequires:  intltool
@@ -40,16 +42,16 @@ Requires:       gnome-icon-theme
 This package includes the settings manager applications for the Xfce desktop. 
 
 %prep
-%setup -q
-%patch 10
-
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
-%configure --enable-sound-settings --enable-pluggable-dialogs --enable-maintainer-mode --enable-xorg-libinput
-%make_build
+  %meson
+  %meson_build
 
 %install
-%make_install
+  %meson_install
 
 for file in %{buildroot}%{_datadir}/applications/*.desktop ; do
     desktop-file-install \
@@ -59,7 +61,6 @@ for file in %{buildroot}%{_datadir}/applications/*.desktop ; do
         --dir=%{buildroot}%{_datadir}/applications \
         $file
 done
-
 
 %find_lang %{name}
 

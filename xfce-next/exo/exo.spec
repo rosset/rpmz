@@ -10,9 +10,11 @@ Summary:        Application library for the Xfce desktop environment
 # Automatically converted from old format: LGPLv2+ and GPLv2+ - review is highly recommended.
 License:        LicenseRef-Callaway-LGPLv2+ AND GPL-2.0-or-later
 URL:            http://xfce.org/
-Source0:        http://archive.xfce.org/src/xfce/%{name}/%{xfceversion}/%{name}-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/xfce/exo/-/archive/master/exo-master.tar.gz
 
 BuildRequires:  gcc-c++
+BuildRequires:  meson
+BuildRequires:  ninja-build
 BuildRequires:  gtk-doc
 BuildRequires:  gettext
 BuildRequires:  perl-URI
@@ -39,17 +41,18 @@ Requires:       pkgconfig
 Development tools and static libraries and header files for the exo library.
 
 %prep
-%setup -q
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
-%configure --enable-gtk-doc --disable-static
-%make_build
+  %meson
+  %meson_build
 
 %install
-%make_install
+  %meson_install
 
 find %{buildroot} -type f -name "*.la" -exec rm -f {} ';'
-
 
 %find_lang exo
 
@@ -68,7 +71,6 @@ find %{buildroot} -type f -name "*.la" -exec rm -f {} ';'
 %{_includedir}/exo*
 %{_libdir}/lib*.so
 %{_libdir}/pkgconfig/*.pc
-
 
 %changelog
 %autochangelog

@@ -15,11 +15,13 @@ Summary:        Implementation of the freedesktop.org menu specification
 License:        LicenseRef-Callaway-LGPLv2+ AND LicenseRef-Callaway-GFDL
 URL:            http://xfce.org/
 #VCS git:git://git.xfce.org/xfce/garcon
-Source0:        http://archive.xfce.org/src/xfce/%{name}/%{xfceversion}/%{name}-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/xfce/garcon/-/archive/master/garcon-master.tar.gz
 Source1:        Documentation.directory
 Patch0:         garcon-%{xfceversion}-fedora-menus.patch
 
 BuildRequires:  pkgconfig(glib-2.0) >= 2.72.0
+BuildRequires:  meson
+BuildRequires:  ninja-build
 BuildRequires:  pkgconfig(libxfce4util-1.0) >= %{xfceversion}
 BuildRequires:  pkgconfig(libxfce4ui-2) >= %{xfceversion}
 BuildRequires:  pkgconfig(gio-2.0) >= 2.72.0
@@ -53,20 +55,17 @@ Obsoletes:      libxfce4menu-devel < 4.6.2
 The %{name}-devel package contains libraries and header files for
 developing applications that use %{name}.
 
-
 %prep
-%setup -q
-%patch -P 0 -p1 -b.fedora-menus
-
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
-%configure --disable-static --enable-gtk-doc
-
-%make_build
-
+  %meson
+  %meson_build
 
 %install
-%make_install
+  %meson_install
 
 # fix permissions for libraries
 chmod 755 %{buildroot}/%{_libdir}/*.so

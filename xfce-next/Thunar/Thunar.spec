@@ -10,7 +10,7 @@ Summary:        Thunar File Manager
 License:        GPL-2.0-or-later
 URL:            http://thunar.xfce.org/
 #VCS git:git://git.xfce.org/xfce/thunar
-Source0:        http://archive.xfce.org/src/xfce/thunar/%{xfceversion}/thunar-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/xfce/thunar/-/archive/master/thunar-master.tar.gz
 
 Source1:        thunar-sendto-gnome-bluetooth.desktop
 Source2:        thunar-sendto-audacious-playlist.desktop
@@ -20,6 +20,8 @@ Source4:        thunar-sendto-blueman.desktop
 Patch:          https://gitlab.xfce.org/xfce/thunar/-/merge_requests/620.patch
 
 BuildRequires:  make
+BuildRequires:  meson
+BuildRequires:  ninja-build
 BuildRequires:  gcc-c++
 BuildRequires:  pkgconfig(exo-2) >= %{xfceversion}
 BuildRequires:  pkgconfig(glib-2.0) >= 2.72.0
@@ -71,23 +73,18 @@ Requires: %{name} = %{version}-%{release}
 Thunarx GTK documentation files for the Thunar file manager.
 
 %prep
-%autosetup -n thunar-%{version} -p1
-
-# fix icon in thunar-sendto-email.desktop
-sed -i 's!internet-mail!mail-message-new!' \
-        plugins/thunar-sendto-email/thunar-sendto-email.desktop.in.in
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
-%configure --enable-dbus
+  %meson
 # Remove rpaths
-sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
-sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
-export LD_LIBRARY_PATH="`pwd`/thunarx/.libs"
-%make_build
 
+  %meson_build
 
 %install
-%make_install
+  %meson_install
 
 # fixes wrong library permissions
 chmod 755 %{buildroot}/%{_libdir}/*.so
@@ -124,7 +121,6 @@ done
 
 # appdata
 appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.appdata.xml
-
 
 %pre
 for target in %{_defaultdocdir}/Thunar/html/*/images

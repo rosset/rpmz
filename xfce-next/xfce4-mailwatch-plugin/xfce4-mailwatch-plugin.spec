@@ -11,7 +11,7 @@ Summary:        Mail Watcher plugin for the Xfce panel
 License:        GPL-2.0-only
 URL:            http://goodies.xfce.org/projects/panel-plugins/%{name}
 #VCS: git:git://git.xfce.org/panel-plugins/xfce4-weather-plugin
-Source0:        http://archive.xfce.org/src/panel-plugins/%{name}/%{minorversion}/%{name}-%{version}.tar.xz
+Source0:        https://gitlab.xfce.org/panel-plugins/xfce4-mailwatch-plugin/-/archive/master/xfce4-mailwatch-plugin-master.tar.gz
 
 BuildRequires:  make
 BuildRequires:  gcc-c++
@@ -23,17 +23,15 @@ BuildRequires:  libgcrypt-devel >= 1.2.0
 BuildRequires:  meson
 Requires:       xfce4-panel >= %{xfceversion}
 
-
 %description
 Mailwatch is a plugin for the Xfce 4 panel. It is intended to replace the 
 current (4.0, 4.2) mail checker plugin in Xfce 4.4. It supports IMAP and POP, 
 local mailboxes in Mbox, Maildir and MH-Maildir format as well as Gmail.
 
 %prep
-%autosetup
-# Fix icon in 'Add new panel item' dialog
-sed -i 's|Icon=xfce-mail|Icon=mail-unread|g' panel-plugin/mailwatch.desktop.in
-
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
 %meson
@@ -42,12 +40,10 @@ sed -i 's|Icon=xfce-mail|Icon=mail-unread|g' panel-plugin/mailwatch.desktop.in
 %install
 %meson_install
 
-
 # make sure debuginfo is generated properly
 chmod -c +x %{buildroot}%{_libdir}/xfce4/panel/plugins/*.so
 
 %find_lang %{name}
-
 
 %files -f %{name}.lang
 %license COPYING
@@ -55,7 +51,6 @@ chmod -c +x %{buildroot}%{_libdir}/xfce4/panel/plugins/*.so
 %{_libdir}/xfce4/panel/plugins/*.so
 %{_datadir}/xfce4/panel/plugins/*.desktop
 %{_datadir}/icons/hicolor/*/*/*
-
 
 %changelog
 %autochangelog

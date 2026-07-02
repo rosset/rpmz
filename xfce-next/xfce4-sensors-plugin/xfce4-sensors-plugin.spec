@@ -10,9 +10,11 @@ Summary:        Sensors plugin for the Xfce panel
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
 URL:            http://goodies.xfce.org/projects/panel-plugins/%{name}
-Source0:        http://archive.xfce.org/src/panel-plugins/%{name}/%{minor_version}/%{name}-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/panel-plugins/xfce4-sensors-plugin/-/archive/master/xfce4-sensors-plugin-master.tar.gz
 
 BuildRequires:  make
+BuildRequires:  meson
+BuildRequires:  ninja-build
 BuildRequires:  gcc-c++
 BuildRequires:  libxfce4ui-devel >= %{xfceversion}
 BuildRequires:  xfce4-panel-devel >= %{xfceversion}
@@ -21,7 +23,6 @@ BuildRequires:  hddtemp
 BuildRequires:  libnotify-devel >= 0.4
 BuildRequires:  gettext
 BuildRequires:  desktop-file-utils
-BuildRequires:  libtool
 
 Requires:       xfce4-panel >= %{xfceversion}
 Requires:       lm_sensors >= 2.8
@@ -40,21 +41,19 @@ Requires:       libxfce4util-devel
 %description devel
 Static libraries and header files for the xfce4-sensors-plugin.
 
-
 %prep
-%autosetup -p1
-sed -i 's/libxfce4ui-1/libxfce4ui-2/g' lib/libxfce4sensors-1.0.pc.in
-
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
-%configure --disable-static \
+  %meson
         --enable-sysfsacpi=yes \
         --with-pathhddtemp=%{_bindir}/hddtemp
-%make_build
-
+  %meson_build
 
 %install
-%make_install
+  %meson_install
 
 %find_lang %{name}
 
@@ -66,7 +65,6 @@ desktop-file-install --vendor "" \
         --dir %{buildroot}%{_datadir}/applications \
         --delete-original \
         %{buildroot}%{_datadir}/applications/xfce4-sensors.desktop
-
 
 %files -f %{name}.lang
 %license COPYING
@@ -84,7 +82,6 @@ desktop-file-install --vendor "" \
 %files devel
 %{_libdir}/pkgconfig/libxfce4sensors-1.0.pc
 %{_libdir}/xfce4/modules/libxfce4sensors.so
-
 
 %changelog
 %autochangelog

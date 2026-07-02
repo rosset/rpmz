@@ -8,9 +8,11 @@ Summary:	A modern, minimalist taskbar for Xfce
 
 License:	GPL-2.0-or-later AND GPL-3.0-or-later AND FSFUL
 URL:		https://gitlab.xfce.org/panel-plugins/xfce4-docklike-plugin
-Source0:	http://archive.xfce.org/src/panel-plugins/%{name}/%{majorversion}/%{name}-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/panel-plugins/xfce4-docklike-plugin/-/archive/master/xfce4-docklike-plugin-master.tar.gz
 
 BuildRequires:	desktop-file-utils
+BuildRequires:  meson
+BuildRequires:  ninja-build
 BuildRequires:	gcc-c++
 BuildRequires:	gettext
 BuildRequires:	gtk3-devel
@@ -28,17 +30,16 @@ an icon and can be pinned to act as a launcher when the application is not
 running. Commonly referred to as a dock.
 
 %prep
-%autosetup
-
-# remove empty files
-rm -f ChangeLog README
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
-%configure
-%make_build
+  %meson
+  %meson_build
 
 %install
-%make_install
+  %meson_install
 
 %find_lang %{name}
 

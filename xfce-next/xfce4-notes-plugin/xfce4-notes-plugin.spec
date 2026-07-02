@@ -10,9 +10,11 @@ Summary:        Notes plugin for the Xfce panel
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
 URL:            http://goodies.xfce.org/projects/panel-plugins/%{name}
-Source0:        http://archive.xfce.org/src/panel-plugins/%{name}/%{minor_version}/%{name}-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/panel-plugins/xfce4-notes-plugin/-/archive/master/xfce4-notes-plugin-master.tar.gz
 
 BuildRequires:  make
+BuildRequires:  meson
+BuildRequires:  ninja-build
 BuildRequires:  gcc-c++
 BuildRequires:  xfce4-panel-devel >= %{xfceversion}
 BuildRequires:  libxfce4ui-devel >= %{xfceversion}
@@ -30,16 +32,17 @@ clicking on the customizable icon with the middle button of your mouse,
 show/hide the notes using the left one, edit the titlebar, change the notes 
 background color and much more.
 
-
 %prep
-%autosetup -p1
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
-%configure --disable-static
-%make_build
+  %meson
+  %meson_build
 
 %install
-%make_install
+  %meson_install
 find %{buildroot} -name '*.la' -exec rm -f {} ';'
 %find_lang %{name}
 
@@ -47,7 +50,6 @@ desktop-file-validate \
     %{buildroot}/%{_sysconfdir}/xdg/autostart/xfce4-notes-autostart.desktop
 desktop-file-validate \
     %{buildroot}/%{_datadir}/applications/xfce4-notes.desktop
-
 
 %files -f %{name}.lang
 %doc AUTHORS ChangeLog NEWS

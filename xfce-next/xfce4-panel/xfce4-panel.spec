@@ -18,13 +18,15 @@ Summary:        Next generation panel for Xfce
 License:        GPL-2.0-or-later AND LicenseRef-Callaway-LGPLv2+
 URL:            http://www.xfce.org/
 #VCS git:git://git.xfce.org/xfce/xfce4-panel
-Source0:        http://archive.xfce.org/src/xfce/%{name}/%{xfceversion}/%{name}-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/xfce/xfce4-panel/-/archive/master/xfce4-panel-master.tar.gz
 
 # clock icon taken from system-config-date, license is GPLv2+
 Source1:        xfce4-clock.png
 Source2:        xfce4-clock.svg
 
 BuildRequires:  make
+BuildRequires:  meson
+BuildRequires:  ninja-build
 BuildRequires:  gcc-c++
 BuildRequires:  gtk3-devel
 BuildRequires:  xfce4-dev-tools
@@ -51,7 +53,6 @@ BuildRequires:  libdbusmenu-gtk3-devel
 BuildRequires:  vala
 %endif
 
-
 # obsolete old plugins
 Obsoletes:      orage < 4.12.1-17.fc34
 Obsoletes:      xfce4-embed-plugin < 1.6.0-13.fc34
@@ -73,29 +74,23 @@ Requires:       libxfce4ui-devel >= %{xfceversion}
 This package includes the header files you will need to build
 plugins for xfce4-panel.
 
-
 %prep
-%autosetup -p1
-
-# Fix icon in 'Add new panel item' dialog
-sed -i 's|Icon=office-calendar|Icon=xfce4-clock|g' plugins/clock/clock.desktop.in.in
-
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
-%configure --enable-gtk-doc --disable-static 
+  %meson
 
 # Remove rpaths
-sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
-sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 
 # The LD_LIBRARY_PATH hack is needed for --enable-gtk-doc
 # because lt-libxfce4panel-scan is linked against libxfce4panel
-export LD_LIBRARY_PATH="`pwd`/libxfce4panel/.libs"
 
-%make_build
+  %meson_build
 
 %install
-%make_install
+  %meson_install
 
 find %{buildroot} -name '*.la' -exec rm -f {} ';'
 

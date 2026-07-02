@@ -15,10 +15,12 @@ Summary:        Vala bindings for the Xfce framework
 License:        LicenseRef-Callaway-LGPLv2+
 URL:            http://wiki.xfce.org/vala-bindings
 # caution! %%version may not be evaluable in %%global
-Source0:        %{srcurl}/%(echo %{version} |sed s:\..$::)/%{name}-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/bindings/xfce4-vala/-/archive/master/xfce4-vala-master.tar.gz
 BuildArch:      noarch
 
 BuildRequires: make
+BuildRequires:  xfce4-dev-tools
+BuildRequires:  libtool
 BuildRequires: exo-devel
 BuildRequires: garcon-devel
 BuildRequires: libxfce4ui-devel
@@ -36,7 +38,10 @@ Xfce4 Vala provides bindings for the Xfce framework
 
 
 %prep
-%setup -q
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
+NOCONFIGURE=1 ./autogen.sh
 
 %build
 %configure --with-vala-api=%{vala_version_api}

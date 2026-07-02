@@ -8,9 +8,11 @@ Summary:	Timer for the Xfce panel
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:	GPL-2.0-or-later
 URL:		http://goodies.xfce.org/projects/panel-plugins/%{name}
-Source0:	http://archive.xfce.org/src/panel-plugins/xfce4-timer-plugin/%{minorver}/%{name}-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/panel-plugins/xfce4-timer-plugin/-/archive/master/xfce4-timer-plugin-master.tar.gz
 
 BuildRequires: make
+BuildRequires:  meson
+BuildRequires:  ninja-build
 BuildRequires:	gcc-c++
 BuildRequires:	xfce4-panel-devel
 BuildRequires:	libxfce4ui-devel
@@ -25,20 +27,19 @@ Requires:	xfce4-panel
 A timer for the Xfce panel. It supports countdown periods and alarms at 
 certain times.
 
-
 %prep
-%autosetup
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
-%configure --disable-static
-
-%make_build
+  %meson
+  %meson_build
 
 %install
-%make_install
+  %meson_install
 
 %find_lang %{name}
-
 
 %files -f %{name}.lang
 %doc AUTHORS ChangeLog

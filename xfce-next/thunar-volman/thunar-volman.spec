@@ -11,9 +11,11 @@ Summary:        Automatic management of removable drives and media for Thunar
 License:        GPL-2.0-or-later
 URL:            http://goodies.xfce.org/projects/thunar-plugins/%{name}
 #VCS: git:git://git.xfce.org/xfce/thunar-volman
-Source0:        http://archive.xfce.org/src/xfce/%{name}/%{xfceversion}/%{name}-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/xfce/thunar-volman/-/archive/master/thunar-volman-master.tar.gz
 
 BuildRequires:  make
+BuildRequires:  meson
+BuildRequires:  ninja-build
 BuildRequires:  gcc-c++
 BuildRequires:  exo-devel >= 0.6.0
 BuildRequires:  xfconf >= %{xfceversion}
@@ -32,20 +34,17 @@ thunar-volman is installed and configured properly, and you plug in your
 digital camera, it will automatically launch your preferred photo application 
 and import the new pictures from the camera into your photo collection.
 
-
 %prep
-%setup
-
-sed -i 's/XFCE;//' thunar-volman-settings/thunar-volman-settings.desktop.in.in
-
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
-%configure
-%make_build
-
+  %meson
+  %meson_build
 
 %install
-%make_install
+  %meson_install
 
 %find_lang %{name}
 
@@ -58,7 +57,6 @@ desktop-file-install \
     --delete-original                                       \
     ${RPM_BUILD_ROOT}%{_datadir}/applications/%{name}-settings.desktop
 
-
 %files -f %{name}.lang
 %doc AUTHORS ChangeLog NEWS THANKS
 %license COPYING
@@ -66,7 +64,6 @@ desktop-file-install \
 %{_bindir}/thunar-volman-settings
 %{_datadir}/icons/*/*/*/*
 %{_datadir}/applications/*thunar-volman-settings.desktop
-
 
 %changelog
 %autochangelog

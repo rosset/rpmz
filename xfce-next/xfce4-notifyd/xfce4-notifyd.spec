@@ -12,7 +12,7 @@ Summary:        Simple notification daemon for Xfce
 License:        GPL-2.0-only
 URL:            http://goodies.xfce.org/projects/applications/xfce4-notifyd
 #VCS:           git:git://http://git.xfce.org/apps/xfce4-notifyd/
-Source0:        http://archive.xfce.org/src/apps/%{name}/%{minorversion}/%{name}-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/apps/xfce4-notifyd/-/archive/master/xfce4-notifyd-master.tar.gz
 
 BuildRequires:  make
 BuildRequires:  gcc-c++
@@ -38,7 +38,6 @@ Provides:       desktop-notification-daemon
 # and obsoletes all notification-daemon-xfce releases
 Obsoletes:      notification-daemon-xfce <= 0.3.7
 
-
 %description
 Xfce4-notifyd is a simple, visually-appealing notification daemon for Xfce 
 that implements the freedesktop.org desktop notifications specification.
@@ -47,10 +46,10 @@ Features:
 * Visually appealing: rounded corners, shaped windows
 * Supports transparency and fade effects
 
-
 %prep
-%setup -q
-
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
 %meson
@@ -62,9 +61,7 @@ Features:
 desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}-config.desktop
 %find_lang %{name}
 
-# remove libtool archives
 find %{buildroot} -name \*.la -exec rm {} \;
-
 
 %files -f %{name}.lang
 %license COPYING

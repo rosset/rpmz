@@ -19,7 +19,7 @@ Summary:        Windowing concept abstraction library for X11 and Wayland
 License:        LGPL-2.1-or-later
 URL:            https://docs.xfce.org/xfce/libxfce4windowing/start
 #VCS:            git:https://gitlab.xfce.org/xfce/{name}.git
-Source0:        http://archive.xfce.org/src/xfce/%{name}/%{xfceversion}/%{name}-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/xfce/libxfce4windowing/-/archive/main/libxfce4windowing-main.tar.gz
 
 BuildRequires:  bzip2
 BuildRequires:  gcc
@@ -66,7 +66,6 @@ supported, through various Wayland protocol extensions.  However, the
 full range of operations available on X11 is not available on Wayland,
 due to missing features in these protocol extensions.
 
-
 %package        devel
 Summary:        Development files for %{name}
 Requires:       %{name}%{?_isa} = %{version}-%{release}
@@ -75,13 +74,10 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 The %{name}-devel package contains libraries and header files for
 developing applications that use %{name}.
 
-
 %prep
-%autosetup -S git_am
-
-
-%conf
-%meson %{!?with_x11:-Dx11=disabled}
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
 %meson_build
@@ -90,7 +86,6 @@ developing applications that use %{name}.
 %meson_install
 
 %find_lang %{name}
-
 
 %files -f %{name}.lang
 %license COPYING

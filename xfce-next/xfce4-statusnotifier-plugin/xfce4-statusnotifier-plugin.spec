@@ -8,11 +8,13 @@ Summary:        Panel area status notifier plugin for Xfce4
 # Automatically converted from old format: LGPLv3 - review is highly recommended.
 License:        LGPL-3.0-only
 URL:            http://www.xfce.org/
-Source0:        http://archive.xfce.org/src/panel-plugins/%{name}/%{basever}/%{name}-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/panel-plugins/xfce4-statusnotifier-plugin/-/archive/master/xfce4-statusnotifier-plugin-master.tar.gz
 
 BuildRequires: make
+BuildRequires:  meson
+BuildRequires:  ninja-build
 BuildRequires:  xfce4-dev-tools
-BuildRequires:  libtool
+
 BuildRequires:  gtk3-devel
 BuildRequires:  libxfce4util-devel
 BuildRequires:  libxfce4ui-devel
@@ -29,21 +31,22 @@ interact with user. This technology is a modern alternative to systray and
 has the freedesktop.org specification.
 
 %prep
-%setup -q
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
-%configure 
-%make_build
+  %meson
+  %meson_build
 
 %install
-%make_install
+  %meson_install
 find %{buildroot} -name \*.la -exec rm {} \;
 if [ ! -d %{buildroot}/%{_libdir} ]; then
 mv %{buildroot}/usr/lib %{buildroot}/%{_libdir}
 fi
 
 %find_lang %{name}
-
 
 %files -f %{name}.lang
 %{_libdir}/xfce4/panel/plugins/libstatusnotifier.*

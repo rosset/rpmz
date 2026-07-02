@@ -13,7 +13,7 @@ Summary:        Mount/unmount utility for the Xfce panel
 License:        GPL-2.0-or-later
 URL:            http://goodies.xfce.org/projects/panel-plugins/%{name}
 #VCS: git:git://git.xfce.org/panel-plugins/xfce4-diskperf-plugin
-Source0:        http://archive.xfce.org/src/panel-plugins/%{name}/%{minorversion}/%{name}-%{version}.tar.xz
+Source0:        https://gitlab.xfce.org/panel-plugins/xfce4-mount-plugin/-/archive/master/xfce4-mount-plugin-master.tar.gz
 
 BuildRequires:  make
 BuildRequires:  gcc-c++
@@ -26,7 +26,9 @@ Requires:       xfce4-panel >= %{xfceversion}
 Mount and unmount filesystems from the Xfce panel.
 
 %prep
-%autosetup
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
 %meson
@@ -35,12 +37,10 @@ Mount and unmount filesystems from the Xfce panel.
 %install
 %meson_install
 
-
 # make sure debuginfo is generated properly
 chmod -c +x %{buildroot}%{_libdir}/xfce4/panel/plugins/*.so
 
 %find_lang %{name}
-
 
 %files -f %{name}.lang
 %doc AUTHORS README

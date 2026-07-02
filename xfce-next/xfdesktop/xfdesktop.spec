@@ -8,9 +8,11 @@ Summary:        Desktop manager for the Xfce Desktop Environment
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
 URL:            http://www.xfce.org/
-Source0:        http://archive.xfce.org/src/xfce/%{name}/%{xfceversion}/%{name}-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/xfce/xfdesktop/-/archive/master/xfdesktop-master.tar.gz
 
 BuildRequires:  make
+BuildRequires:  meson
+BuildRequires:  ninja-build
 BuildRequires:  gcc-c++
 BuildRequires:  libxfce4ui-devel >= %{xfceversion}
 BuildRequires:  gettext
@@ -41,15 +43,16 @@ Requires:       webp-pixbuf-loader%{?_isa}
 This package includes a desktop manager for the Xfce Desktop Environment.
 
 %prep
-%setup -q
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
-%configure --with-default-backdrop-filename=%{_datadir}/backgrounds/images/default.jxl
-
-%make_build
+  %meson
+  %meson_build
 
 %install
-%make_install
+  %meson_install
 
 find %{buildroot} -name '*.la' -exec rm -f {} ';'
 

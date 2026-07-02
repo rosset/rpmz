@@ -8,7 +8,7 @@ Summary:        Screensaver application for Xfce Desktop
 # Automatically converted from old format: GPLv2 and LGPLv2 - review is highly recommended.
 License:        GPL-2.0-only AND LicenseRef-Callaway-LGPLv2
 URL:            https://git.xfce.org/apps/xfce4-screensaver/
-Source0:        https://archive.xfce.org/src/apps/%{name}/%{majorver}/%{name}-%{version}.tar.xz
+Source0:        https://gitlab.xfce.org/apps/xfce4-screensaver/-/archive/master/xfce4-screensaver-master.tar.gz
 
 BuildRequires:  meson
 BuildRequires:  gcc-c++
@@ -36,14 +36,10 @@ Xfce Screensaver is a port of MATE Screensaver, itself a port of GNOME
 Screensaver. It has been tightly integrated with the Xfce desktop, utilizing 
 Xfce libraries and the Xfconf configuration backend.
 
-
 %prep
-%autosetup
-
-
-%conf
-# wayland backend needs libwlembed packaged
-%meson -Dx11=enabled -Dwayland=disabled
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
 %meson_build
@@ -55,7 +51,6 @@ Xfce libraries and the Xfconf configuration backend.
 # remove systemd file
 # https://bugzilla.redhat.com/show_bug.cgi?id=2055507
 rm -f %{buildroot}%{_datadir}/dbus-1/services/org.xfce.ScreenSaver.service
-
 
 for file in %{buildroot}%{_datadir}/applications/screensavers/*.desktop ; do
      desktop-file-install \

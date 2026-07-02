@@ -9,9 +9,11 @@ Summary:        Next generation window manager for Xfce
 License:        GPL-2.0-or-later
 URL:            http://www.xfce.org/
 #VCS git:git://git.xfce.org/xfce/xfwm4
-Source0:        http://archive.xfce.org/src/xfce/%{name}/%{xfceversion}/%{name}-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/xfce/xfwm4/-/archive/master/xfwm4-master.tar.gz
 
 BuildRequires:  make
+BuildRequires:  meson
+BuildRequires:  ninja-build
 BuildRequires:  gcc-c++
 BuildRequires:  libxfce4ui-devel >= %{xfceversion}
 BuildRequires:  libXext-devel
@@ -33,17 +35,17 @@ Provides:       firstboot(windowmanager) = xfwm4
 xfwm4 is a window manager compatible with GNOME, GNOME2, KDE2, KDE3 and Xfce.
 
 %prep
-%autosetup -p1
-
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
 export export CFLAGS="%{optflags} -DSHOW_POSITION"
-%configure --disable-static
-
-%make_build
+  %meson
+  %meson_build
 
 %install
-%make_install
+  %meson_install
 
 %find_lang %{name}
 
@@ -64,7 +66,6 @@ done
 %{_datadir}/themes/*
 %dir %{_libdir}/xfce4/xfwm4/
 %{_libdir}/xfce4/xfwm4/helper-dialog
-
 
 %changelog
 %autochangelog

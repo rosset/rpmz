@@ -8,7 +8,7 @@ Summary:        Taskmanager for the Xfce desktop environment
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
 URL:            http://goodies.xfce.org/projects/applications/%{name}
-Source0:        http://archive.xfce.org/src/apps/%{name}/%{majorversion}/%{name}-%{version}.tar.xz
+Source0:        https://gitlab.xfce.org/apps/xfce4-taskmanager/-/archive/master/xfce4-taskmanager-master.tar.gz
 
 BuildRequires:  make
 BuildRequires:  gcc-c++
@@ -21,15 +21,14 @@ BuildRequires:  libwnck3-devel
 %description
 A simple taskmanager for the Xfce desktop environment.
 
-
 %prep
-%setup -q
-
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
 %meson
 %meson_build
-
 
 %install
 %meson_install
@@ -44,8 +43,6 @@ desktop-file-install \
     --remove-category Utility \
     --dir %{buildroot}%{_datadir}/applications \
     %{buildroot}%{_datadir}/applications/%{name}.desktop
-
-
 
 %files -f %{name}.lang
 %license COPYING

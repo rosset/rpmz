@@ -12,15 +12,15 @@ Summary:        Systemload monitor for the Xfce panel
 License:        LicenseRef-Callaway-BSD
 URL:            http://goodies.xfce.org/projects/panel-plugins/%{name}
 #VCS: git:git://git.xfce.org/panel-plugins/xfce4-systemload-plugin
-Source0:        http://archive.xfce.org/src/panel-plugins/%{name}/%{minorversion}/%{name}-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/panel-plugins/xfce4-systemload-plugin/-/archive/master/xfce4-systemload-plugin-master.tar.gz
 
 %if 0%{?fedora} >= 39
 ExcludeArch:    %{ix86}
 %endif
 
-
-
 BuildRequires:  make
+BuildRequires:  meson
+BuildRequires:  ninja-build
 BuildRequires:  gcc-c++
 BuildRequires:  libxfce4ui-devel >= %{xfceversion}
 BuildRequires:  xfce4-panel-devel >= %{xfceversion}
@@ -34,18 +34,17 @@ Requires:       xfce4-panel >= %{xfceversion}
 A system-load monitor plugin for the Xfce panel. It displays the current CPU 
 load, the memory in use, the swap space and the system uptime.
 
-
 %prep
-%setup -q
-
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
-%configure --disable-static
-%make_build
-
+  %meson
+  %meson_build
 
 %install
-%make_install
+  %meson_install
 
 # remove la file
 find %{buildroot} -name '*.la' -exec rm -f {} ';'
@@ -54,7 +53,6 @@ find %{buildroot} -name '*.la' -exec rm -f {} ';'
 chmod -c +x %{buildroot}%{_libdir}/xfce4/panel/plugins/*.so
 
 %find_lang %{name}
-
 
 %files -f %{name}.lang
 %license COPYING

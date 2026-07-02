@@ -13,7 +13,7 @@ Summary:        CPU monitor for the Xfce panel
 License:        GPL-2.0-or-later
 URL:            http://goodies.xfce.org/projects/panel-plugins/%{name}
 #VCS: git:git://git.xfce.org/panel-plugins/xfce4-cpugraph-plugin
-Source0:        http://archive.xfce.org/src/panel-plugins/%{name}/%{minorversion}/%{name}-%{version}.tar.xz
+Source0:        https://gitlab.xfce.org/panel-plugins/xfce4-cpugraph-plugin/-/archive/master/xfce4-cpugraph-plugin-master.tar.gz
 
 BuildRequires:  make
 BuildRequires:  gcc-c++
@@ -27,15 +27,14 @@ A CPU monitor plugin for the Xfce panel. It offers multiple display modes
 (LED, gradient, fire, etc...) to show the current CPU load of the system. The 
 colors and the size of the plugin are customizable.
 
-
 %prep
-%autosetup
-
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
 %meson
 %meson_build
-
 
 %install
 %meson_install
@@ -47,7 +46,6 @@ chmod -c +x %{buildroot}%{_libdir}/xfce4/panel/plugins/*.so
 
 %check
 %meson_test
-
 
 %files -f %{name}.lang
 %doc AUTHORS NEWS

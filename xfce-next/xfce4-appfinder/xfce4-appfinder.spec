@@ -9,9 +9,11 @@ Summary:        Appfinder for the Xfce4 Desktop Environment
 License:        GPL-2.0-or-later
 URL:            http://www.xfce.org/
 #VCS git:git://git.xfce.org/xfce/xfce4-appfinder
-Source0:        http://archive.xfce.org/src/xfce/%{name}/%{xfceversion}/%{name}-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/xfce/xfce4-appfinder/-/archive/master/xfce4-appfinder-master.tar.gz
 
 BuildRequires:  make
+BuildRequires:  meson
+BuildRequires:  ninja-build
 BuildRequires:  gcc-c++
 BuildRequires:  pkgconfig(dbus-glib-1) >= 0.84
 BuildRequires:  pkgconfig(garcon-1) >= 0.1.7
@@ -26,22 +28,17 @@ BuildRequires:  libappstream-glib
 %description
 xfce-appfinder shows system wide installed applications.
 
-
 %prep
-%setup -q
-
-# fix icon problems - GTK-3.10+
-sed -i 's/gtk-find/edit-find/g' data/xfce4-appfinder.desktop.in
-sed -i 's/gtk-execute/system-run/g' data/xfce4-run.desktop.in
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
-%configure
-
-%make_build
+  %meson
+  %meson_build
 
 %install
-%make_install
-
+  %meson_install
 
 desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 desktop-file-validate %{buildroot}%{_datadir}/applications/xfce4-run.desktop
@@ -49,7 +46,6 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/xfce4-run.desktop
 appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/org.xfce.%{name}.appdata.xml
 
 %find_lang %{name}
-
 
 %files -f %{name}.lang
 %license COPYING

@@ -11,9 +11,11 @@ Summary:        D-Bus service for applications to request thumbnails
 License:        GPL-2.0-or-later AND LicenseRef-Callaway-LGPLv2+
 URL:            http://git.xfce.org/xfce/tumbler/
 #VCS git:git://git.xfce.org/xfce/tumbler
-Source0:        https://archive.xfce.org/src/xfce/%{name}/%{xfceversion}/%{name}-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/xfce/tumbler/-/archive/master/tumbler-master.tar.gz
 
 BuildRequires:  make
+BuildRequires:  meson
+BuildRequires:  ninja-build
 BuildRequires:  gcc
 BuildRequires:  freetype-devel
 BuildRequires:  gettext
@@ -30,7 +32,6 @@ BuildRequires:  gstreamer1-plugins-base-devel
 %{?fedora:BuildRequires: libgsf-devel}
 %{?fedora:BuildRequires: libopenraw-gnome-devel}
 
-
 %description
 Tumbler is a D-Bus service for applications to request thumbnails for various
 URI schemes and MIME types. It is an implementation of the thumbnail
@@ -38,7 +39,6 @@ management D-Bus specification described on
 http://live.gnome.org/ThumbnailerSpec written in an object-oriented fashion
 
 Additional thumbnailers can be found in the tumbler-extras package
-
 
 %package extras
 Summary:       Additional thumbnailers for %{name}
@@ -48,7 +48,6 @@ Requires:      %{name}%{?_isa} = %{version}-%{release}
 This package contains additional thumbnailers for file types, which are not used
 very much and require additional libraries to be installed.
 
-
 %package devel
 Summary:       Development files for %{name}
 Requires:      %{name}%{?_isa} = %{version}-%{release}
@@ -57,24 +56,22 @@ Requires:      %{name}%{?_isa} = %{version}-%{release}
 This package contains libraries and header files for developing applications 
 that use %{name}.
 
-
 %prep
-%setup -q
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
-%configure --disable-static
+  %meson
 
 # Omit unused direct shared library dependencies.
-sed --in-place --expression 's! -shared ! -Wl,--as-needed\0!g' libtool
 
 # Remove rpaths.
-sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
-sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 
-%make_build
+  %meson_build
 
 %install
-%make_install
+  %meson_install
 
 # fix permissions for installed libs
 chmod 755 $RPM_BUILD_ROOT/%{_libdir}/*.so

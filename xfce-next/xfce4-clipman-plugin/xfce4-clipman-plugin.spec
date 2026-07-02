@@ -12,7 +12,7 @@ Summary:        Clipboard manager plugin for the Xfce panel
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
 URL:            http://goodies.xfce.org/projects/panel-plugins/%{name}
-Source0:        http://archive.xfce.org/src/panel-plugins/%{name}/%{minorversion}/%{name}-%{version}.tar.xz
+Source0:        https://gitlab.xfce.org/panel-plugins/xfce4-clipman-plugin/-/archive/master/xfce4-clipman-plugin-master.tar.gz
 
 BuildRequires:  make
 BuildRequires:  gcc-c++
@@ -32,7 +32,9 @@ This is a simple cliboard history for Xfce panel. It includes a "Clear
 clipboard" option, and a drag-and-drop paste feature.
 
 %prep
-%autosetup
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
 %meson
@@ -53,7 +55,6 @@ desktop-file-install \
   --dir %{buildroot}%{_sysconfdir}/xdg/autostart \
   --delete-original  \
   %{buildroot}%{_sysconfdir}/xdg/autostart/%{name}-autostart.desktop
-
 
 %files -f %{name}.lang
 %doc AUTHORS NEWS README.md

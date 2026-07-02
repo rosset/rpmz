@@ -12,9 +12,11 @@ Summary:        WaveLAN plugin for the Xfce panel
 License:        LicenseRef-Callaway-BSD
 URL:            http://goodies.xfce.org/projects/panel-plugins/%{name}
 #VCS: git:git://git.xfce.org/panel-plugins/xfce4-wavelan-plugin
-Source0:        http://archive.xfce.org/src/panel-plugins/%{name}/%{minorversion}/%{name}-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/panel-plugins/xfce4-wavelan-plugin/-/archive/master/xfce4-wavelan-plugin-master.tar.gz
 
 BuildRequires: make
+BuildRequires:  meson
+BuildRequires:  ninja-build
 BuildRequires:  gcc-c++
 BuildRequires:  libxfce4ui-devel >= %{xfceversion}
 BuildRequires:  xfce4-panel-devel >= %{xfceversion}
@@ -28,15 +30,16 @@ A plugin for the Xfce panel that monitors a wireless LAN interface. It
 displays stats for signal state, signal quality and network name (SSID).
 
 %prep
-%setup -q
-
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
-%configure --disable-static
-%make_build
+  %meson
+  %meson_build
 
 %install
-%make_install
+  %meson_install
 
 # remove la file
 find %{buildroot} -name '*.la' -exec rm -f {} ';'
@@ -45,7 +48,6 @@ find %{buildroot} -name '*.la' -exec rm -f {} ';'
 chmod -c +x %{buildroot}%{_libdir}/xfce4/panel/plugins/*.so
 
 %find_lang %{name}
-
 
 %files -f %{name}.lang
 %license COPYING

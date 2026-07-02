@@ -8,7 +8,7 @@ Summary:	A theme manager for Xfce
 License:	GPL-3.0-only	
 URL:		https://github.com/KeithDHedger/Xfce-Theme-Manager
 # wget https://github.com/KeithDHedger/Xfce-Theme-Manager/archive/xfce-theme-manager-0.3.8.tar.gz
-Source0:	https://github.com/KeithDHedger/Xfce-Theme-Manager/archive/%{pkgname}-%{version}.tar.gz
+Source0:        https://github.com/KeithDHedger/Xfce-Theme-Manager/archive/master/Xfce-Theme-Manager-master.tar.gz
 BuildRequires:	autoconf
 BuildRequires:	cairo-devel
 BuildRequires:	desktop-file-utils
@@ -26,8 +26,10 @@ A theme manager allowing easy configuration of themes,
 window borders, controls, icons and cursors for Xfce
 
 %prep
-%autosetup -n %{pkgname}-%{version} -p1
-
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
+NOCONFIGURE=1 ./autogen.sh
 
 %build
 #run autoreconf, not needed when upstream moves to  new automake

@@ -13,7 +13,7 @@ Summary:        Battery monitor for the Xfce panel
 License:        GPL-2.0-or-later
 URL:            http://goodies.xfce.org/projects/panel-plugins/%{name}
 #VCS: git:git://git.xfce.org/panel-plugins/xfce4-battery-plugin
-Source0:        http://archive.xfce.org/src/panel-plugins/%{name}/%{minorversion}/%{name}-%{version}.tar.xz
+Source0:        https://gitlab.xfce.org/panel-plugins/xfce4-battery-plugin/-/archive/master/xfce4-battery-plugin-master.tar.gz
 
 BuildRequires:  make
 BuildRequires:  gcc-c++
@@ -25,14 +25,14 @@ Requires:       xfce4-panel >= %{xfceversion}
 %description
 A battery monitor plugin for the Xfce panel, compatible with APM and ACPI.
 
-
 %prep
-%autosetup
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
 %meson
 %meson_build
-
 
 %install
 %meson_install
@@ -45,14 +45,12 @@ chmod -c +x %{buildroot}%{_libdir}/xfce4/panel/plugins/*.so
 
 %find_lang %{name}
 
-
 %files -f %{name}.lang
 %license COPYING
 %doc AUTHORS COPYING.LIB README.md
 %{_libdir}/xfce4/panel/plugins/*.so
 %{_datadir}/xfce4/panel/plugins/*.desktop
 %{_datadir}/icons/hicolor/*/*/*
-
 
 %changelog
 %autochangelog

@@ -6,9 +6,11 @@ Summary:        Simple PolicyKit authentication agent for Xfce
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
 URL:            https://github.com/ncopa/%{name}
-Source0:        %{url}/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
+Source0:        https://github.com/ncopa/xfce-polkit/archive/master/xfce-polkit-master.tar.gz
 
 BuildRequires: make
+BuildRequires:  meson
+BuildRequires:  ninja-build
 BuildRequires:  gcc
 BuildRequires:  automake
 BuildRequires:  libxfce4ui-devel polkit-devel
@@ -21,17 +23,17 @@ Requires: polkit >= 0.97
 %description
 %{summary}.
 
-
 %prep
-%autosetup
-autoreconf -fi
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
-%configure
-%make_build
+  %meson
+  %meson_build
 
 %install
-%make_install
+  %meson_install
 desktop-file-edit --remove-key=NotShowIn --add-only-show-in=XFCE \
  %{buildroot}%{_sysconfdir}/xdg/autostart/%{name}.desktop
 

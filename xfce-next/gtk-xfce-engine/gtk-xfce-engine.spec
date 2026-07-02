@@ -11,6 +11,8 @@ URL:            http://www.xfce.org/
 #VCS: git:git://git.xfce.org/xfce/gtk-xfce-engine
 Source0:        http://archive.xfce.org/src/xfce/%{name}/%{minorversion}/%{name}-%{version}.tar.bz2
 BuildRequires:  gcc
+BuildRequires:  meson
+BuildRequires:  ninja-build
 BuildRequires:  pkgconfig(gtk+-2.0) >= 2.20.0
 BuildRequires:  pkgconfig(gtk+-3.0) >= 3.2.0
 BuildRequires: make
@@ -19,27 +21,25 @@ BuildRequires: make
 This package includes the Xfce GTK theme engine with various different themes.
 
 %prep
-%setup -q
-
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
-%configure --disable-static --enable-gtk3
+  %meson
 
 make %{?_smp_mflags}
 
-
 %install
 rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT INSTALL='install -p'
+  %meson_install
 find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
-
 
 %files
 %doc AUTHORS COPYING NEWS README
 %{_libdir}/gtk-2.0/*/engines/libxfce.so
 %{_libdir}/gtk-3.0/*/theming-engines/libxfce.so
 %{_datadir}/themes/*
-
 
 %changelog
 * Fri Jan 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 3.2.0-25

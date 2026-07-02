@@ -10,9 +10,11 @@ Summary:        Daemon to add additional functionality to the volume keys of the
 # Automatically converted from old format: GPLv3+ - review is highly recommended.
 License:        GPL-3.0-or-later
 URL:            https://git.xfce.org/apps/xfce4-volumed-pulse/
-Source0:        https://archive.xfce.org/src/apps/%{upstreamname}/%{minorversion}/%{upstreamname}-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/apps/xfce4-volumed-pulse/-/archive/master/xfce4-volumed-pulse-master.tar.gz
 
 BuildRequires: make
+BuildRequires:  meson
+BuildRequires:  ninja-build
 BuildRequires:  gcc-c++
 BuildRequires:  xfconf-devel
 BuildRequires:  libnotify-devel
@@ -30,17 +32,16 @@ the XFCE 4 mixer's defined card and track for choosing which track to act on.
 The volume level is shown in a notification.
 
 %prep
-%setup -qn %{upstreamname}-%{version}
-echo "Icon=multimedia-volume-control" >> data/%{name}.desktop
-
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
-%configure
-%make_build
-
+  %meson
+  %meson_build
 
 %install
-%make_install
+  %meson_install
 desktop-file-install \
   --add-category="Utility" \
   --dir=%{buildroot}/%{_datadir}/applications \
@@ -49,13 +50,11 @@ desktop-file-install \
 # one launcher is enough, we don't want to have a daemon in the menu
 rm -rf %{buildroot}/%{_datadir}/applications/
 
-
 %files
 %doc AUTHORS ChangeLog README THANKS
 %license COPYING
 /etc/xdg/autostart/%{upstreamname}.desktop
 %{_bindir}/%{upstreamname}
-
 
 %changelog
 * Sat Jan 17 2026 Fedora Release Engineering <releng@fedoraproject.org> - 0.2.3-38

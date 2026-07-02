@@ -10,10 +10,12 @@ Summary:        Utility library for the Xfce4 desktop environment
 # Automatically converted from old format: LGPLv2+ - review is highly recommended.
 License:        LicenseRef-Callaway-LGPLv2+
 URL:            http://www.xfce.org/
-Source0:        http://archive.xfce.org/src/xfce/%{name}/%{xfceversion}/%{name}-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/xfce/libxfce4util/-/archive/master/libxfce4util-master.tar.gz
 #VCS: git:git://git.xfce.org/xfce/libxfce4util
 
 BuildRequires:  gcc-c++
+BuildRequires:  meson
+BuildRequires:  ninja-build
 BuildRequires:  pkgconfig(glib-2.0) >= 2.24.0
 BuildRequires:  gettext
 BuildRequires:  intltool
@@ -37,19 +39,18 @@ This package includes static libraries and header files for the
 libxfce4util library.
 
 %prep
-%setup -q
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
-%configure --disable-static
+  %meson
 # Remove rpaths
-sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
-sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
-export LD_LIBRARY_PATH="`pwd`/libxfce4util/.libs"
 
-%make_build
+  %meson_build
 
 %install
-%make_install
+  %meson_install
 
 # kevin identified the issue - fixes wrong library permissions
 chmod 755 %{buildroot}/%{_libdir}/*.so

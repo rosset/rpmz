@@ -13,7 +13,7 @@ Summary:        Places menu for the Xfce panel
 License:        GPL-2.0-or-later
 URL:            http://goodies.xfce.org/projects/panel-plugins/%{name}
 #VCS: git:git://git.xfce.org/panel-plugins/xfce4-places-plugin
-Source0:        http://archive.xfce.org/src/panel-plugins/%{name}/%{minorversion}/%{name}-%{version}.tar.xz
+Source0:        https://gitlab.xfce.org/panel-plugins/xfce4-places-plugin/-/archive/master/xfce4-places-plugin-master.tar.gz
 
 BuildRequires:  make
 BuildRequires:  gcc-c++
@@ -35,25 +35,22 @@ a menu with 4 sections:
 3) User-defined bookmarks (reads ~/.gtk-bookmarks)
 4) Recent documents submenu (requires GTK v2.10 or greater) 
 
-
 %prep
-%autosetup -p1
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
 %meson
 %meson_build
 
-
 %install
 %meson_install
-
 
 # make sure debuginfo is generated properly
 chmod -c +x %{buildroot}%{_libdir}/xfce4/panel/plugins/*.so
 
 %find_lang %{name}
-
-
 
 %files -f %{name}.lang
 %doc AUTHORS COPYING NEWS README.md TODO

@@ -13,9 +13,11 @@ Summary:        Weather plugin for the Xfce panel
 License:        LicenseRef-Callaway-BSD
 URL:            http://goodies.xfce.org/projects/panel-plugins/%{name}
 #VCS: git:git://git.xfce.org/panel-plugins/xfce4-weather-plugin
-Source0:        http://archive.xfce.org/src/panel-plugins/%{name}/%{minorversion}/%{name}-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/panel-plugins/xfce4-weather-plugin/-/archive/master/xfce4-weather-plugin-master.tar.gz
 
 BuildRequires:  make
+BuildRequires:  meson
+BuildRequires:  ninja-build
 BuildRequires:  gcc-c++
 BuildRequires:  libxfce4ui-devel >= %{xfceversion}
 BuildRequires:  xfce4-panel-devel >= %{xfceversion}
@@ -31,17 +33,17 @@ Requires:       xfce4-panel >= %{xfceversion}
 A weather plugin for the Xfce panel. It shows the current temperature and 
 weather condition, using weather data provided by xoap.weather.com.
 
-
 %prep
-%autosetup
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
-%configure
-%make_build
+  %meson
+  %meson_build
 
 %install
-%make_install
-
+  %meson_install
 
 # remove la file
 find %{buildroot} -name '*.la' -exec rm -f {} ';'
@@ -58,7 +60,6 @@ chmod -c +x %{buildroot}%{_libdir}/xfce4/panel/plugins/*.so
 %{_datadir}/xfce4/panel/plugins/*.desktop
 %{_datadir}/icons/hicolor/*/*/*
 %{_datadir}/xfce4/weather
-
 
 %changelog
 %autochangelog

@@ -9,9 +9,11 @@ Summary:        Hierarchical configuration system for Xfce
 License:        GPL-2.0-only
 URL:            http://www.xfce.org/
 #VCS git:git://git.xfce.org/xfce/xfconf
-Source0:        http://archive.xfce.org/src/xfce/%{name}/%{xfceversion}/%{name}-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/xfce/xfconf/-/archive/master/xfconf-master.tar.gz
 
 BuildRequires:  make
+BuildRequires:  meson
+BuildRequires:  ninja-build
 BuildRequires:  glib2-devel
 BuildRequires:  pkgconfig(libxfce4util-1.0) >= %{xfceversion}
 BuildRequires:  pkgconfig(dbus-1) >= 1.1.0
@@ -48,18 +50,17 @@ This package includes the libraries and header files you will need
 to compile applications for xfconf.
 
 %prep
-%setup -q
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
-%configure --disable-static --with-perl-options=INSTALLDIRS="vendor"
-sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
-sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
-export LD_LIBRARY_PATH="`pwd`/xfconf/.libs"
+  %meson
 
-%make_build
+  %meson_build
 
 %install
-%make_install
+  %meson_install
 
 # fix permissions for installed libraries
 chmod 755 %{buildroot}/%{_libdir}/*.so

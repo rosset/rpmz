@@ -13,7 +13,7 @@ Summary:        Filesystem-Guard plugin for the Xfce panel
 License:        LicenseRef-Callaway-BSD
 URL:            http://goodies.xfce.org/projects/panel-plugins/%{name}
 #VCS: git:git://git.xfce.org/panel-plugins/xfce4-fsguard-plugin
-Source0:        http://archive.xfce.org/src/panel-plugins/%{name}/%{minorversion}/%{name}-%{version}.tar.xz
+Source0:        https://gitlab.xfce.org/panel-plugins/xfce4-fsguard-plugin/-/archive/master/xfce4-fsguard-plugin-master.tar.gz
 
 BuildRequires:  make
 BuildRequires:  gcc-c++
@@ -28,10 +28,10 @@ frequently. It displays 4 different icons and a message box, depending on the
 free space. The amount of free disk space is visible in a tooltip. If you 
 left-click on its icon, it opens the mountpoint directory in the file manager.
 
-
 %prep
-%autosetup
-
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
 %meson
@@ -40,12 +40,10 @@ left-click on its icon, it opens the mountpoint directory in the file manager.
 %install
 %meson_install
 
-
 # make sure debuginfo is generated properly
 chmod -c +x %{buildroot}%{_libdir}/xfce4/panel/plugins/*.so
 
 %find_lang %{name}
-
 
 %files -f %{name}.lang
 %doc AUTHORS NEWS

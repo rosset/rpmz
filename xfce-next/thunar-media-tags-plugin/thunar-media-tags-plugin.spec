@@ -12,10 +12,12 @@ Summary:        Media Tags plugin for the Thunar file manager
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
 URL:            http://goodies.xfce.org/projects/thunar-plugins/%{name}
-Source0:        http://archive.xfce.org/src/thunar-plugins/%{name}/%{minor_version}/%{name}-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/thunar-plugins/thunar-media-tags-plugin/-/archive/master/thunar-media-tags-plugin-master.tar.gz
 #VCS:           git:git://git.xfce.org/thunar-plugins/thunar-media-tags-plugin
 
 BuildRequires:  make
+BuildRequires:  meson
+BuildRequires:  ninja-build
 BuildRequires:  gcc-c++
 BuildRequires:  exo >= 0.12.0
 BuildRequires:  libxfce4util-devel >= %{xfceversion}
@@ -32,18 +34,17 @@ It includes a special media file page for the file properties dialog, a tag
 editor for ID3 or OGG/Vorbis tags and a so-called bulk renamer, which allows 
 users to rename multiple audio files at once, based on their tags.
 
-
 %prep
-%setup -q
-
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
-%configure
-
-%make_build
+  %meson
+  %meson_build
 
 %install
-%make_install
+  %meson_install
 
 find %{buildroot} -type f -name "*.la" -exec rm -f {} ';'
 
@@ -53,7 +54,6 @@ find %{buildroot} -type f -name "*.la" -exec rm -f {} ';'
 %license COPYING
 %doc AUTHORS ChangeLog TODO
 %{_libdir}/thunarx-*/%{name}.so
-
 
 %changelog
 %autochangelog

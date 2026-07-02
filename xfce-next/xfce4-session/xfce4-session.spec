@@ -9,7 +9,7 @@ Summary:        Xfce session manager
 License:        GPL-2.0-or-later
 URL:            http://www.xfce.org/
 #VCS git:git://git.xfce.org/xfce/xfce4-session
-Source0:        http://archive.xfce.org/src/xfce/%{name}/%{xfceversion}/%{name}-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/xfce/xfce4-session/-/archive/master/xfce4-session-master.tar.gz
 # Add a xfce-mimeapps.list to allow setting mime handlers for Xfce apps
 
 Source2:        xfce-mimeapps.list
@@ -18,6 +18,8 @@ Source2:        xfce-mimeapps.list
 Patch1:         xfce-session-%{xfceversion}-startxfce4.patch
 
 BuildRequires:  make
+BuildRequires:  meson
+BuildRequires:  ninja-build
 BuildRequires:  dbus-devel >= 1.1.0
 BuildRequires:  dbus-glib-devel >= 0.84
 BuildRequires:  glib2-devel >= 2.24.0
@@ -36,7 +38,7 @@ BuildRequires:  libxslt
 #BuildRequires:  libxml2
 BuildRequires:  systemd-devel >= 195
 BuildRequires:  polkit-devel
-BuildRequires:  libtool
+
 BuildRequires:  libxfce4windowing-devel
 
 Requires:       iceauth xrdb xset
@@ -68,19 +70,17 @@ Available for testing/advanced users.
 See https://wiki.xfce.org/releng/wayland_roadmap#testing
 
 %prep
-%autosetup -p1
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
-%configure --disable-static
+  %meson
 
-sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
-sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
-
-%make_build
-
+  %meson_build
 
 %install
-%make_install
+  %meson_install
 
 # remove xscreensaver autostart file
 rm -fr %{buildroot}%{_sysconfdir}/xdg/autostart/xscreensaver.desktop

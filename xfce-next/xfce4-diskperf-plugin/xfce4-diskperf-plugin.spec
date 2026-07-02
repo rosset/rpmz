@@ -13,7 +13,7 @@ Summary:        Disk performance plugin for the Xfce panel
 License:        LicenseRef-Callaway-BSD
 URL:            http://goodies.xfce.org/panel-plugins/{%name}
 #VCS: git:git://git.xfce.org/panel-plugins/xfce4-diskperf-plugin
-Source0:        http://archive.xfce.org/src/panel-plugins/%{name}/%{minorversion}/%{name}-%{version}.tar.xz
+Source0:        https://gitlab.xfce.org/panel-plugins/xfce4-diskperf-plugin/-/archive/master/xfce4-diskperf-plugin-master.tar.gz
 
 BuildRequires:  make
 BuildRequires:  gcc-c++
@@ -27,7 +27,9 @@ The DiskPerf plugin displays disk/partition performance (bytes transfered per
 second) based on data provided by the kernel.
 
 %prep
-%autosetup
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
 %meson
@@ -36,16 +38,13 @@ second) based on data provided by the kernel.
 %install
 %meson_install
 
-
 %find_lang %{name}
-
 
 %files -f %{name}.lang
 %doc AUTHORS NEWS
 %license COPYING
 %{_libdir}/xfce4/panel/plugins/*.so
 %{_datadir}/xfce4/panel/plugins/*.desktop
-
 
 %changelog
 %autochangelog

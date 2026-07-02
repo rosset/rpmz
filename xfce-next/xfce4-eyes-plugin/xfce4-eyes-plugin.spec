@@ -10,7 +10,7 @@ Summary:        Eyes for the Xfce panel
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
 URL:            http://goodies.xfce.org/projects/panel-plugins/%{name}
-Source0:        http://archive.xfce.org/src/panel-plugins/%{name}/%{minor_version}/%{name}-%{version}.tar.xz
+Source0:        https://gitlab.xfce.org/panel-plugins/xfce4-eyes-plugin/-/archive/master/xfce4-eyes-plugin-master.tar.gz
 
 BuildRequires:  make
 BuildRequires:  gcc-c++
@@ -25,7 +25,9 @@ Requires:       xfce4-panel >= %{xfceversion}
 A xfce4 panel plugin that adds eyes which watch your every step. Scary!
 
 %prep
-%autosetup
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
 %meson
@@ -35,8 +37,6 @@ A xfce4 panel plugin that adds eyes which watch your every step. Scary!
 %meson_install
 
 %find_lang %{name}
-
-
 
 %files -f %{name}.lang
 %doc AUTHORS

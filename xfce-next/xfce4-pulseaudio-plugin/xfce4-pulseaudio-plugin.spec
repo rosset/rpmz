@@ -10,7 +10,7 @@ Summary:	Pulseaudio plugin for Xfce4
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:	GPL-2.0-or-later
 URL:		https://github.com/andrzej-r/xfce4-pulseaudio-plugin
-Source0:	http://archive.xfce.org/src/panel-plugins/%{name}/%{versnum}/%{name}-%{version}.tar.xz
+Source0:        https://gitlab.xfce.org/panel-plugins/xfce4-pulseaudio-plugin/-/archive/master/xfce4-pulseaudio-plugin-master.tar.gz
 
 BuildRequires:	make
 BuildRequires:	gcc-c++
@@ -38,10 +38,9 @@ Requires:	pavucontrol
 Pulseaudio panel plugin for Xfce Desktop Environment
 
 %prep
-%autosetup
-
-# remove empty files
-rm -f AUTHORS README
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
 %meson
@@ -50,7 +49,6 @@ rm -f AUTHORS README
 %install
 %meson_install
 
-# remove libtool archives
 find %{buildroot} -name '*.la' -exec rm -f {} ';'
 
 %find_lang %{name}
@@ -58,7 +56,6 @@ find %{buildroot} -name '*.la' -exec rm -f {} ';'
 # remove zero-length files
 rm -f %{buildroot}/%{defaultdocdir}/AUTHORS
 rm -f %{buildroot}/%{defaultdocdir}/README
-
 
 %files -f %{name}.lang
 %{license} COPYING

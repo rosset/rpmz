@@ -9,9 +9,11 @@ Summary:	A simple application to manage Xfce panel layouts
 # Automatically converted from old format: GPLv3 - review is highly recommended.
 License:	GPL-3.0-only
 URL:		https://git.xfce.org/apps/xfce4-panel-profiles/about/
-Source0:	https://archive.xfce.org/src/apps/%{name}/%{majorver}/%{name}-%{version}.tar.bz2
+Source0:        https://gitlab.xfce.org/apps/xfce4-panel-profiles/-/archive/master/xfce4-panel-profiles-master.tar.gz
 
 BuildRequires: make
+BuildRequires:  meson
+BuildRequires:  ninja-build
 BuildRequires:	python3-devel
 BuildRequires:	gettext
 BuildRequires:	intltool
@@ -34,18 +36,16 @@ This tool makes it possible to backup, restore, import, and export these
 panel layouts.
 
 %prep
-%autosetup
-sed -i '4s/$/Configuration;User;/'  org.xfce.PanelProfiles.desktop.in
-sed -i '/Keywords/d' org.xfce.PanelProfiles.desktop.in
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
 ./configure --prefix=%{_prefix}
-
-%make_build
+  %meson_build
 
 %install
-%make_install
-
+  %meson_install
 
 %find_lang %{name}
 

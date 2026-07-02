@@ -12,7 +12,7 @@ Summary(de):    Ein Wörterbuch-Client für die Xfce Desktop-Umgebung
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
 URL:            http://goodies.xfce.org/projects/applications/%{name}
-Source0:        http://archive.xfce.org/src/apps/%{name}/%{minor_version}/%{name}-%{version}.tar.xz
+Source0:        https://gitlab.xfce.org/apps/xfce4-dict/-/archive/master/xfce4-dict-master.tar.gz
 #VCS:           git:git://git.xfce.org/apps/xfce4-dict
 
 BuildRequires:  make
@@ -22,7 +22,6 @@ BuildRequires:  xfce4-panel-devel >= %{xfceversion}
 BuildRequires:  desktop-file-utils
 BuildRequires:  meson
 Requires:       enchant, xdg-utils
-
 
 %description
 Xfce4 Dictionary is a client program to query different dictionaries. It can
@@ -42,10 +41,10 @@ query a Dict server (RFC 2229), open online dictionaries in a web browser or
 verify the spelling of a word using enchant. This package contains the plugin
 for the Xfce panel.
 
-
 %prep
-%setup -q
-
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
 %meson
@@ -63,7 +62,6 @@ chmod -c +x %{buildroot}%{_libdir}/xfce4/panel/plugins/*.so
 %find_lang %{name}
 
 desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
-
 
 %ldconfig_scriptlets
 

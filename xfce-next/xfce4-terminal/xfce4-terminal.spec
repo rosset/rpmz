@@ -9,8 +9,7 @@ Summary:        Terminal Emulator for the Xfce Desktop environment
 # Automatically converted from old format: GPLv2+ - review is highly recommended.
 License:        GPL-2.0-or-later
 URL:            http://docs.xfce.org/apps/terminal/start
-Source0:        http://archive.xfce.org/src/apps/xfce4-terminal/%{minorversion}/%{name}-%{version}.tar.xz
-
+Source0:        https://gitlab.xfce.org/apps/xfce4-terminal/-/archive/master/xfce4-terminal-master.tar.gz
 
 BuildRequires:  meson
 BuildRequires:  gcc-c++
@@ -35,7 +34,9 @@ with many advanced features including drop down, tabs, unlimited scrolling,
 full colors, fonts, transparent backgrounds, and more.
 
 %prep
-%autosetup -p1
+%setup -q -c
+shopt -s dotglob
+mv */* . 2>/dev/null || :
 
 %build
 %meson
