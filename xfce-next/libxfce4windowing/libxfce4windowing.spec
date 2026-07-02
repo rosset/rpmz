@@ -80,6 +80,7 @@ shopt -s dotglob
 mv */* . 2>/dev/null || :
 
 %build
+%meson
 %meson_build
 
 %install
