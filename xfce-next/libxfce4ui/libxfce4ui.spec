@@ -29,9 +29,7 @@ BuildRequires:  pkgconfig(libxfconf-0) >= %{xfceversion}
 BuildRequires:  pkgconfig(libstartup-notification-1.0) >= 0.4
 BuildRequires:  gtk-doc
 BuildRequires:  desktop-file-utils
-BuildRequires:  glade-devel
 BuildRequires:  gtk3-devel
-BuildRequires:  glade-devel
 BuildRequires:  gettext
 BuildRequires:  intltool
 BuildRequires:  gobject-introspection-devel
@@ -63,7 +61,6 @@ Summary:        Development files for %{name}
 Requires:       %{name} = %{version}-%{release}
 Requires:       gtk3-devel
 Requires:       libxfce4util-devel
-Requires:       glade-devel
 Requires:       pkgconfig
 Obsoletes:      libxfcegui4-devel < 4.10.0-9
 
@@ -77,7 +74,7 @@ shopt -s dotglob
 mv */* . 2>/dev/null || :
 
 %build
-  %meson -Dgtk-doc=true -Dglade=true
+  %meson -Dgtk-doc=true
 
 # Remove rpaths
 
@@ -124,9 +121,6 @@ desktop-file-install \
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/*.pc
 %doc %{_datadir}/gtk-doc/
-%{_libdir}/glade/modules/lib*.so
-%{_datadir}/glade/catalogs/%{name}*.xml*
-%{_datadir}/glade/pixmaps/hicolor/*/actions/*
 
 %changelog
 %autochangelog
