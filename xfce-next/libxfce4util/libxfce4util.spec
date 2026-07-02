@@ -46,7 +46,7 @@ mv */* . 2>/dev/null || :
 touch ChangeLog
 
 %build
-  %meson
+  %meson -Dgtk-doc=true
 # Remove rpaths
 
   %meson_build
