@@ -62,7 +62,7 @@ shopt -s dotglob
 mv */* . 2>/dev/null || :
 
 %build
-  %meson
+  %meson -Dffmpeg-thumbnailer=disabled -Dgepub-thumbnailer=disabled -Dgtk-doc=true
 
 # Omit unused direct shared library dependencies.
 
