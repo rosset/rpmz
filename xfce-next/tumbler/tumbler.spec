@@ -84,7 +84,7 @@ find %{buildroot} -type f -name "*.la" -delete
 
 %files -f %{name}.lang
 %license COPYING
-%doc AUTHORS ChangeLog NEWS
+%doc AUTHORS NEWS
 %config(noreplace) %{_sysconfdir}/xdg/tumbler/
 %{_datadir}/dbus-1/services/org.xfce.Tumbler.*.service
 %{_libdir}/libtumbler-*.so.*
