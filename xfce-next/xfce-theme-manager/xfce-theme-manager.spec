@@ -29,13 +29,15 @@ window borders, controls, icons and cursors for Xfce
 %setup -q -c
 shopt -s dotglob
 mv */* . 2>/dev/null || :
+sed -i 's/^CXXFLAGS=-Wall/CXXFLAGS="$CXXFLAGS -Wall"/' configure.ac
+sed -i 's/^CFLAGS=-Wall/CFLAGS="$CFLAGS -Wall"/' configure.ac
 NOCONFIGURE=1 ./autogen.sh
 
 %build
 #run autoreconf, not needed when upstream moves to  new automake
 autoreconf -v -f -i -I.
-%configure
-%make_build xfcethememanager_CFLAGS="%{optflags} -export-dynamic" xfcethememanager_CXXFLAGS="%{optflags} -export-dynamic -Wunused -Wunused-function -Wno-unused-result -fPIC"
+%configure LDFLAGS="%{__global_ldflags} -export-dynamic"
+%make_build
 
 
 %install
