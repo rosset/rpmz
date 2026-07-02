@@ -106,9 +106,13 @@ desktop-file-install \
 %config(noreplace) %{_sysconfdir}/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
 %{_libdir}/*.so.*
 %{_libdir}/girepository-1.0/%{namespc}-2.0.typelib
+%{_libdir}/girepository-1.0/Libxfce4kbdprivate-3.0.typelib
 %{_datadir}/gir-1.0/%{namespc}-2.0.gir
 %{_datadir}/vala/vapi/%{name}-2.deps
 %{_datadir}/vala/vapi/%{name}-2.vapi
+%{_bindir}/xfce-desktop-item-edit
+%{_bindir}/xfce-open
+%{_datadir}/pixmaps/libxfce4ui/xfce-thumbnail-frame.png
 
 %files -n xfce4-about
 %{_bindir}/xfce4-about
@@ -120,6 +124,7 @@ desktop-file-install \
 %{_includedir}/*
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/*.pc
+%{_datadir}/gir-1.0/Libxfce4kbdprivate-3.0.gir
 %doc %{_datadir}/gtk-doc/
 
 %changelog
