@@ -37,6 +37,7 @@ BuildRequires:  gobject-introspection-devel
 BuildRequires:  vala
 BuildRequires:  make
 BuildRequires:  libgtop2-devel
+BuildRequires:  libgudev-devel
 
 #
 # libxfcegui4 was depreciated in the Xfce 4.8 days.
@@ -74,7 +75,7 @@ shopt -s dotglob
 mv */* . 2>/dev/null || :
 
 %build
-  %meson
+  %meson -Dgtk-doc=true
 
 # Remove rpaths
 
