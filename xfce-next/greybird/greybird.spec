@@ -119,6 +119,7 @@ mv */* . 2>/dev/null || :
 %{_datadir}/themes/%{theme_name}/gtk-3.0/
 %{_datadir}/themes/%{theme_name}/gtk-4.0/
 %{_datadir}/themes/%{theme_name}/openbox-3/
+%{_datadir}/themes/%{theme_name}/unity/
 
 %files dark-theme
 %doc LICENSE.GPL LICENSE.CC
@@ -128,6 +129,7 @@ mv */* . 2>/dev/null || :
 %{_datadir}/themes/%{theme_name}-dark/gtk-2.0/
 %{_datadir}/themes/%{theme_name}-dark/gtk-3.0/
 %{_datadir}/themes/%{theme_name}-dark/openbox-3/
+%{_datadir}/themes/%{theme_name}-dark/unity/
 
 %files metacity-theme
 %doc LICENSE.GPL LICENSE.CC
